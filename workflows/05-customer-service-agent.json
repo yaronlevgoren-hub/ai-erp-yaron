@@ -215,6 +215,16 @@
             "node": "Customer Support Agent",
             "type": "ai_languageModel",
             "index": 0
+          },
+          {
+            "node": "Policies Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Products Tool",
+            "type": "ai_languageModel",
+            "index": 0
           }
         ]
       ]

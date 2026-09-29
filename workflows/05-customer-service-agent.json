@@ -1,0 +1,292 @@
+{
+  "name": "5 - Customer Service Agent (Telegram)",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        200,
+        300
+      ],
+      "id": "telegram-trigger-01",
+      "name": "Telegram Trigger",
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram Support Bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "אתה סוכן שירות הלקוחות הרשמי של חברת איי.איי אלקטרוניקה בע\"מ (AI Electronics).\nתפקידך לתת מענה מקצועי, אדיב, תמציתי ומדויק בעברית ללקוחות החברה.\nהסתמך אך ורק על המידע המופיע במאגרי המדיניות (policies_search) והמוצרים (products_search).\nכללים קריטיים (Guardrails):\n1. שיעור המע\"מ הוא 18% (בתוקף מ-01/01/2025).\n2. החזרת מוצר בחרטה: עד 14 יום באריזה מקורית, דמי ביטול 5% או 100 ₪ (הנמוך מביניהם).\n3. משלוח חינם בקנייה מעל 499 ₪. משלוח רגיל: 35 ₪.\n4. כל המוצרים נמכרים עם אחריות יבואן רשמי בישראל.\n5. לעולם אל תמציא מחירים, הנחות או מפרטים שאינם קיימים במאגר.\n6. במקרה של תקלה חמורה, מחלוקת כספית או אם אינך מוצא תשובה, הפנה לשירות האנושי: טלפון 03-555-1234, וואטסאפ 050-555-1234, או מייל support@ai-electronics.co.il."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        460,
+        300
+      ],
+      "id": "ai-agent-01",
+      "name": "Customer Support Agent"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        520
+      ],
+      "id": "chat-model-01",
+      "name": "Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "policies_search",
+        "description": "חיפוש במדיניות החברה: החזרות, ביטולים, אחריות, משלוחים, מע\"מ 18% ושירות לקוחות"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        540,
+        520
+      ],
+      "id": "tool-policies-01",
+      "name": "Policies Tool"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve",
+        "memoryKey": {
+          "__rl": true,
+          "value": "mypolicies",
+          "mode": "list",
+          "cachedResultName": "mypolicies"
+        },
+        "topK": 4
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1,
+      "position": [
+        540,
+        700
+      ],
+      "id": "vector-store-policies-01",
+      "name": "Policies Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        500,
+        860
+      ],
+      "id": "embeddings-policies-01",
+      "name": "Policies Embeddings",
+      "credentials": {
+        "openAiApi": {
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "products_search",
+        "description": "חיפוש בקטלוג המוצרים: מפרטים טכניים, מחירים, אחריות ומלאי"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        700,
+        520
+      ],
+      "id": "tool-products-01",
+      "name": "Products Tool"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve",
+        "memoryKey": {
+          "__rl": true,
+          "value": "theproducts",
+          "mode": "list",
+          "cachedResultName": "theproducts"
+        },
+        "topK": 4
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1,
+      "position": [
+        700,
+        700
+      ],
+      "id": "vector-store-products-01",
+      "name": "Products Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        700,
+        860
+      ],
+      "id": "embeddings-products-01",
+      "name": "Products Embeddings",
+      "credentials": {
+        "openAiApi": {
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        860,
+        300
+      ],
+      "id": "telegram-send-01",
+      "name": "Telegram Send Reply",
+      "credentials": {
+        "telegramApi": {
+          "name": "Telegram Support Bot"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Customer Support Agent": {
+      "main": [
+        [
+          {
+            "node": "Telegram Send Reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Policies Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Policies Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Policies Tool",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Policies Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Policies Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Products Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Customer Support Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Products Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Products Tool",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Products Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Products Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

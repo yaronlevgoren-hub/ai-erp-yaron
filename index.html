@@ -130,6 +130,12 @@
       </div>
 
       <div class="flex items-center gap-3">
+        <!-- Telegram Bots Hub Button -->
+        <button onclick="openBotsHubModal()" class="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg text-sm font-bold shadow-md shadow-slate-900/20 border border-slate-700 transition-all">
+          <i data-lucide="send" class="w-4 h-4 text-sky-400"></i>
+          <span>בוטים בטלגרם (Telegram)</span>
+        </button>
+
         <!-- Quick Action AI Button -->
         <button onclick="toggleChat(true)" class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3.5 py-2 rounded-lg text-sm font-bold shadow-md shadow-blue-500/20 transition-all">
           <i data-lucide="bot" class="w-4 h-4"></i>
@@ -399,20 +405,73 @@
       </section>
 
       <!-- VIEW: PRODUCTS -->
-      <section id="view-products" class="hidden space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <div class="flex items-center gap-2 flex-1 max-w-md">
-            <div class="relative w-full">
-              <i data-lucide="search" class="w-4 h-4 absolute right-3 top-3 text-slate-400"></i>
-              <input type="text" id="product-search" oninput="renderProducts()" placeholder="חיפוש לפי שם, מק\"ט או קטגוריה..." class="w-full pr-9 pl-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <section id="view-products" class="hidden space-y-5">
+        <!-- Products Header & Controls -->
+        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-extrabold text-slate-800 flex items-center gap-2">
+                <span>קטלוג מוצרים רשמי ומלאי חי</span>
+                <span id="product-total-badge" class="text-xs bg-blue-100 text-blue-800 font-bold px-2.5 py-0.5 rounded-full">30 מוצרים</span>
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">כל המחירים כוללים 18% מע"מ כחוק ואחריות יבואן רשמי בישראל</p>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <!-- Search Input -->
+              <div class="relative w-64">
+                <i data-lucide="search" class="w-4 h-4 absolute right-3 top-2.5 text-slate-400"></i>
+                <input type="text" id="product-search" oninput="renderProducts()" placeholder="חיפוש לפי שם, מק\"ט או מפרט..." class="w-full pr-9 pl-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+              </div>
+
+              <!-- Sorting Dropdown -->
+              <select id="product-sort" onchange="renderProducts()" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-slate-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="featured">מיון: מומלצים</option>
+                <option value="price-asc">מחיר: מהנמוך לגבוה</option>
+                <option value="price-desc">מחיר: מהגבוה לנמוך</option>
+                <option value="stock-desc">מלאי זמין: מהגבוה לנמוך</option>
+                <option value="stock-asc">מלאי נמוך קודם</option>
+              </select>
             </div>
           </div>
-          <div class="text-xs text-slate-500 font-medium">
-            כל המחירים כוללים 18% מע"מ ואחריות יבואן רשמי
+
+          <!-- Category Filter Pills -->
+          <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs border-t border-slate-100 pt-3" id="category-pills">
+            <button onclick="setProductCategory('all')" id="cat-pill-all" class="category-pill px-3.5 py-1.5 rounded-lg font-bold bg-blue-600 text-white transition-all">
+              הכל (30)
+            </button>
+            <button onclick="setProductCategory('סמארטפונים')" id="cat-pill-סמארטפונים" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              📱 סמארטפונים
+            </button>
+            <button onclick="setProductCategory('מחשבים ניידים')" id="cat-pill-מחשבים ניידים" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              💻 מחשבים ניידים
+            </button>
+            <button onclick="setProductCategory('טאבלטים')" id="cat-pill-טאבלטים" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              📟 טאבלטים
+            </button>
+            <button onclick="setProductCategory('אודיו')" id="cat-pill-אודיו" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              🎧 אודיו ואוזניות
+            </button>
+            <button onclick="setProductCategory('מכשירים לבישים')" id="cat-pill-מכשירים לבישים" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              ⌚ שעונים ולבישים
+            </button>
+            <button onclick="setProductCategory('גיימינג')" id="cat-pill-גיימינג" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              🎮 גיימינג וקונסולות
+            </button>
+            <button onclick="setProductCategory('ציוד רשת')" id="cat-pill-ציוד רשת" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              🌐 ציוד רשת
+            </button>
+            <button onclick="setProductCategory('אביזרים')" id="cat-pill-אביזרים" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              🔌 אביזרים וטעינה
+            </button>
+            <button onclick="setProductCategory('בית חכם')" id="cat-pill-בית חכם" class="category-pill px-3.5 py-1.5 rounded-lg font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all">
+              🏠 בית חכם
+            </button>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="products-container">
+        <!-- Products Grid Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5" id="products-container">
           <!-- Rendered dynamically -->
         </div>
       </section>
@@ -552,6 +611,80 @@
           <span>הדפס / שמור כ-PDF</span>
         </button>
         <button onclick="closeInvoiceModal()" class="text-sm text-slate-500 hover:underline">
+          סגור
+        </button>
+      </div>
+    </div>
+  <!-- Telegram Bots Hub Modal -->
+  <div id="bots-hub-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-2xl w-full p-6 space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-sky-500/10 text-sky-600 flex items-center justify-center">
+            <i data-lucide="send" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-black text-slate-900 leading-tight">מרכז בוטים ועוזרי AI בטלגרם</h3>
+            <p class="text-xs text-slate-500">2 בוטים אוטונומיים רשמיים המשולבים ב-n8n Cloud, Airtable ו-OpenAI</p>
+          </div>
+        </div>
+        <button onclick="closeBotsHubModal()" class="text-slate-400 hover:text-slate-600 p-2 rounded-xl">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Bot 1: Customer Service Agent -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-blue-50/50 to-indigo-50/50 border border-blue-100 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">בוט #1 (שירות לקוחות)</span>
+              <span class="flex items-center gap-1 text-[11px] text-emerald-600 font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                פעיל ומחובר
+              </span>
+            </div>
+            <h4 class="font-extrabold text-base text-slate-900">שירות לקוחות (WF5)</h4>
+            <div class="text-xs font-mono text-blue-600 mb-2">@yaron_ai_support_bot</div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              סוכן שירות לקוחות 24/7 המעוגן במאגר RAG של 12 קובצי מדיניות החברה וקטלוג 30 המוצרים. בקיא בהחזרות (14 יום, 5%/100 ₪), מע"מ 18% ומשלוח חינם מעל 499 ₪.
+            </p>
+            <div class="mt-3 p-2.5 bg-white/80 rounded-xl border border-blue-100/60 text-[11px] text-slate-500">
+              <strong class="text-slate-700">פתיח רשמי:</strong> "ברוכים הבאים לחנות שלנו! כיצד נוכל לעזור לך היום? 🛒"
+            </div>
+          </div>
+
+          <a href="https://t.me/yaron_ai_support_bot" target="_blank" class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-sm transition-all">
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <span>פתח שיחה בטלגרם (@yaron_ai_support_bot)</span>
+          </a>
+        </div>
+
+        <!-- Bot 2: Manager / Owner Executive Agent -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white border border-slate-700 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-800 text-amber-300 border border-slate-700">בוט #2 (מנהל בלבד)</span>
+              <span class="text-[11px] text-slate-400 font-mono">מאובטח Chat ID</span>
+            </div>
+            <h4 class="font-extrabold text-base text-white">מנהל ומנכ"ל (WF9)</h4>
+            <div class="text-xs font-mono text-sky-400 mb-2">@yaron_ai_manager_bot</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              עוזר עסקי אישי לבעל העסק (ירון). מחשב הכנסות, מציג חשבוניות פתוחות מעל שוטף+30, מתריע על מוצרים במלאי נמוך, ומנהל משימות ב-Airtable.
+            </p>
+            <div class="mt-3 p-2.5 bg-slate-800/80 rounded-xl border border-slate-700 text-[11px] text-slate-300">
+              <strong class="text-amber-300">Guardrail מובנה:</strong> עונה אך ורק למזהה ה-Telegram Chat ID של ירון בלבד.
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-400 text-center py-2.5 bg-slate-800/60 rounded-xl border border-slate-700/60">
+            תצורת WF9 מוכנה לייבוא ב-n8n Cloud
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-slate-100">
+        <button onclick="closeBotsHubModal()" class="text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2 rounded-xl transition-all">
           סגור
         </button>
       </div>
@@ -870,41 +1003,170 @@
       document.getElementById('invoice-modal').classList.add('hidden');
     }
 
-    // רינדור מוצרים
+    function openBotsHubModal() {
+      document.getElementById('bots-hub-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeBotsHubModal() {
+      document.getElementById('bots-hub-modal').classList.add('hidden');
+    }
+
+    let currentCategory = 'all';
+
+    function setProductCategory(cat) {
+      currentCategory = cat;
+      const pills = document.querySelectorAll('.category-pill');
+      pills.forEach(p => {
+        p.classList.remove('bg-blue-600', 'text-white', 'font-bold');
+        p.classList.add('bg-slate-100', 'text-slate-600', 'font-semibold');
+      });
+      const activePill = document.getElementById(`cat-pill-${cat}`);
+      if (activePill) {
+        activePill.classList.remove('bg-slate-100', 'text-slate-600', 'font-semibold');
+        activePill.classList.add('bg-blue-600', 'text-white', 'font-bold');
+      }
+      renderProducts();
+    }
+
+    // רינדור מוצרים משודרג
     function renderProducts() {
-      const search = (document.getElementById('product-search').value || '').toLowerCase();
-      const products = store.getAll('products').filter(p => 
-        p.name.toLowerCase().includes(search) || 
-        (p.category && p.category.toLowerCase().includes(search)) ||
-        (p.sku && p.sku.toLowerCase().includes(search))
-      );
+      const search = (document.getElementById('product-search')?.value || '').toLowerCase();
+      const sortMode = document.getElementById('product-sort')?.value || 'featured';
+
+      let products = store.getAll('products');
+
+      // סינון לפי קטגוריה
+      if (currentCategory && currentCategory !== 'all') {
+        products = products.filter(p => p.category === currentCategory);
+      }
+
+      // סינון לפי חיפוש
+      if (search) {
+        products = products.filter(p => 
+          p.name.toLowerCase().includes(search) || 
+          (p.category && p.category.toLowerCase().includes(search)) ||
+          (p.sku && p.sku.toLowerCase().includes(search)) ||
+          (p.description && p.description.toLowerCase().includes(search))
+        );
+      }
+
+      // מיון
+      if (sortMode === 'price-asc') products.sort((a, b) => a.price - b.price);
+      else if (sortMode === 'price-desc') products.sort((a, b) => b.price - a.price);
+      else if (sortMode === 'stock-desc') products.sort((a, b) => b.stock - a.stock);
+      else if (sortMode === 'stock-asc') products.sort((a, b) => a.stock - b.stock);
+
+      const badge = document.getElementById('product-total-badge');
+      if (badge) badge.innerText = `${products.length} מוצרים`;
 
       const container = document.getElementById('products-container');
-      container.innerHTML = products.map(p => `
-        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">${p.category}</span>
-              <span class="text-xs font-mono text-slate-400">${p.sku || p.id}</span>
+      if (!container) return;
+
+      if (products.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center bg-white rounded-2xl border border-slate-200">
+            <i data-lucide="package-search" class="w-12 h-12 text-slate-300 mx-auto mb-3"></i>
+            <h4 class="font-bold text-slate-700">לא נמצאו מוצרים התואמים את החיפוש</h4>
+            <p class="text-xs text-slate-400 mt-1">נסה לשנות את מילת החיפוש או לבחור בקטגוריה אחרת</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = products.map(p => {
+        const netPrice = Math.round(p.price / 1.18);
+        const isLowStock = p.stock <= (p.minStock || 4);
+        return `
+        <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between overflow-hidden group">
+          <div class="p-5">
+            <!-- Header Badges -->
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-100/60">
+                ${p.category}
+              </span>
+              <span class="text-[10px] font-mono text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+                ${p.sku || p.id}
+              </span>
             </div>
-            <h4 class="font-bold text-slate-900 text-sm mb-1">${p.name}</h4>
-            <p class="text-xs text-slate-500 line-clamp-2 mb-3">${p.description}</p>
+
+            <!-- Title & Warranty -->
+            <h4 class="font-extrabold text-slate-900 text-sm leading-snug mb-1 group-hover:text-blue-600 transition-colors">
+              ${p.name}
+            </h4>
+
+            <div class="flex items-center gap-1.5 text-[11px] text-emerald-700 font-semibold mb-2.5">
+              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>${p.warrantyMonths || 24} חודשי אחריות יבואן רשמי</span>
+            </div>
+
+            <!-- Description -->
+            <p class="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+              ${p.description}
+            </p>
           </div>
 
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+          <!-- Bottom Card Footer -->
+          <div class="px-5 py-3.5 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-3">
             <div>
-              <div class="text-base font-extrabold text-blue-600">₪ ${p.price.toLocaleString()}</div>
-              <div class="text-[10px] text-slate-400">כולל 18% מע"מ</div>
+              <div class="text-lg font-black text-slate-900">
+                ₪ ${p.price.toLocaleString()}
+              </div>
+              <div class="text-[10px] text-slate-400">
+                <span>₪ ${netPrice.toLocaleString()} לפני מע"מ</span>
+                <span class="text-blue-600 font-semibold">(18% מע"מ)</span>
+              </div>
             </div>
-            <div class="text-right">
-              <span class="badge ${p.stock <= (p.minStock || 5) ? 'badge-red' : 'badge-green'} font-bold">
-                מלאי: ${p.stock} יח'
+
+            <div class="flex flex-col items-end gap-1.5">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 ${isLowStock ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}">
+                <span class="w-1.5 h-1.5 rounded-full ${isLowStock ? 'bg-rose-500 animate-ping' : 'bg-emerald-500'}"></span>
+                ${isLowStock ? `מלאי נמוך: ${p.stock}` : `במלאי: ${p.stock}`}
               </span>
+              <button onclick="quickOrderProduct('${p.id}')" class="text-[11px] bg-blue-600 hover:bg-blue-700 text-white font-bold px-2.5 py-1 rounded-lg shadow-sm transition-all flex items-center gap-1">
+                <i data-lucide="plus" class="w-3 h-3"></i>
+                <span>הזמנה מהירה</span>
+              </button>
             </div>
           </div>
         </div>
-      `).join('');
+      `}).join('');
       lucide.createIcons();
+    }
+
+    // הזמנה מהירה של מוצר
+    function quickOrderProduct(productId) {
+      const p = store.getById('products', productId);
+      if (!p) return;
+      const customers = store.getAll('customers');
+      const cust = customers[0] || { id: 'CUST-0001', name: 'יונתן רוזנברג' };
+
+      const subtotal = Math.round(p.price / 1.18);
+      const vatAmount = p.price - subtotal;
+
+      const newOrder = {
+        id: `ORD-2026-${String(store.getAll('orders').length + 1).padStart(3, '0')}`,
+        customerId: cust.id,
+        customerName: cust.name,
+        items: [{ productId: p.id, name: p.name, quantity: 1, unitPrice: p.price, total: p.price }],
+        subtotal: subtotal,
+        vatAmount: vatAmount,
+        total: p.price,
+        status: "סופק",
+        paymentMethod: "העברה בנקאית (שוטף+30)",
+        shippingAddress: cust.address || "רחוב הברזל 30, תל אביב",
+        date: new Date().toLocaleDateString('he-IL')
+      };
+
+      store.add('orders', newOrder);
+      if (p.stock > 0) {
+        store.update('products', p.id, { stock: p.stock - 1 });
+      }
+
+      alert(`נוצרה הזמנה מהירה ${newOrder.id} עבור "${p.name}" על סך ₪ ${p.price.toLocaleString()} כולל 18% מע"מ!`);
+      renderProducts();
+      renderDashboard();
     }
 
     // רינדור משימות

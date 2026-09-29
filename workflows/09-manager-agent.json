@@ -1,5 +1,5 @@
 {
-  "name": "5 - Customer Service Agent (Telegram)",
+  "name": "9 - Manager & Owner Agent (Telegram)",
   "nodes": [
     {
       "parameters": {
@@ -14,11 +14,11 @@
         200,
         300
       ],
-      "id": "telegram-trigger-01",
-      "name": "Telegram Trigger",
+      "id": "manager-telegram-trigger-01",
+      "name": "Telegram Owner Trigger",
       "credentials": {
         "telegramApi": {
-          "name": "Telegram Support Bot"
+          "name": "Telegram Manager Bot"
         }
       }
     },
@@ -27,7 +27,7 @@
         "promptType": "define",
         "text": "={{ $json.message.text }}",
         "options": {
-          "systemMessage": "אתה סוכן שירות הלקוחות הרשמי של חברת איי.איי אלקטרוניקה בע\"מ (AI Electronics).\nתפקידך לתת מענה מקצועי, אדיב, תמציתי ומדויק בעברית ללקוחות החברה.\n\nברכת פתיחה:\nכאשר לקוח פותח בשיחה, שולח /start, אומר שלום או נכנס לבוט, פתח תמיד בברכה:\n\"ברוכים הבאים לחנות שלנו! (איי.איי אלקטרוניקה בע\"מ) 🛒\nכיצד נוכל לעזור לך היום?\nבאפשרותי לסייע לך במידע על מוצרים ומפרטים, מחירי מבצע, מדיניות החזרות ואחריות יבואן רשמי, זמני משלוח ומע\"מ 18%.\"\n\nהסתמך אך ורק על המידע המופיע במאגרי המדיניות (policies_search) והמוצרים (products_search).\nכללים קריטיים (Guardrails):\n1. שיעור המע\"מ הוא 18% (בתוקף מ-01/01/2025).\n2. החזרת מוצר בחרטה: עד 14 יום באריזה מקורית, דמי ביטול 5% או 100 ₪ (הנמוך מביניהם).\n3. משלוח חינם בקנייה מעל 499 ₪. משלוח רגיל: 35 ₪.\n4. כל המוצרים נמכרים עם אחריות יבואן רשמי בישראל.\n5. לעולם אל תמציא מחירים, הנחות או מפרטים שאינם קיימים במאגר.\n6. במקרה של תקלה חמורה, מחלוקת כספית או אם אינך מוצא תשובה, הפנה לשירות האנושי: טלפון 03-555-1234, וואטסאפ 050-555-1234, או מייל support@ai-electronics.co.il."
+          "systemMessage": "אתה העוזר העסקי הבכיר והאנליסט התפעולי של ירון לבגורן, בעלים ומנכ\"ל חברת 'איי.איי אלקטרוניקה בע\"מ' (AI Electronics Ltd).\n\nתפקידך לסייע לירון בניהול העסק, קבלת החלטות, ניתוח נתונים ודוחות סטטוס:\n1. מנהל ומנכ\"ל: פנה לירון תמיד בכבוד ובמקצועיות כבעל הבית (\"שלום ירון\").\n2. דוחות מלאי ותפעול: הסתמך על מאגר המוצרים (products_search) כדי לאתר מוצרים במלאי נמוך (מתחת ל-5 יחידות), מפרטים ומחירים.\n3. מדיניות, תמחור וגבייה: הסתמך על מאגר המדיניות (policies_search) לגבי תנאי תשלום (שוטף+30), הנחות כמות B2B, מע\"מ 18% (מ-1.1.2025), ואחריות יבואן רשמי.\n4. תשובות מדויקות: ספק מספרים מדויקים בשקלים (₪), ניתוח עלויות מול מחירי מכירה, ודוחות תמציתיים ומובנים."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -36,8 +36,8 @@
         460,
         300
       ],
-      "id": "ai-agent-01",
-      "name": "Customer Support Agent"
+      "id": "manager-agent-01",
+      "name": "Manager Executive Agent"
     },
     {
       "parameters": {
@@ -52,7 +52,7 @@
         380,
         520
       ],
-      "id": "chat-model-01",
+      "id": "manager-chat-model-01",
       "name": "Chat Model",
       "credentials": {
         "openAiApi": {
@@ -63,7 +63,7 @@
     {
       "parameters": {
         "name": "policies_search",
-        "description": "חיפוש במדיניות החברה: החזרות, ביטולים, אחריות, משלוחים, מע\"מ 18% ושירות לקוחות"
+        "description": "חיפוש במדיניות החברה: תנאי תשלום שוטף+30, הנחות B2B, מע\"מ 18%, החזרות ואחריות יבואן רשמי"
       },
       "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
       "typeVersion": 1,
@@ -71,7 +71,7 @@
         540,
         520
       ],
-      "id": "tool-policies-01",
+      "id": "manager-tool-policies-01",
       "name": "Policies Tool"
     },
     {
@@ -91,7 +91,7 @@
         540,
         700
       ],
-      "id": "vector-store-policies-01",
+      "id": "manager-vector-policies-01",
       "name": "Policies Vector Store"
     },
     {
@@ -104,7 +104,7 @@
         500,
         860
       ],
-      "id": "embeddings-policies-01",
+      "id": "manager-embeddings-policies-01",
       "name": "Policies Embeddings",
       "credentials": {
         "openAiApi": {
@@ -115,7 +115,7 @@
     {
       "parameters": {
         "name": "products_search",
-        "description": "חיפוש בקטלוג המוצרים: מפרטים טכניים, מחירים, אחריות ומלאי"
+        "description": "חיפוש בקטלוג המוצרים: בדיקת רמות מלאי, התראות מלאי נמוך, מפרטים ומחירי מוצרים"
       },
       "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
       "typeVersion": 1,
@@ -123,7 +123,7 @@
         700,
         520
       ],
-      "id": "tool-products-01",
+      "id": "manager-tool-products-01",
       "name": "Products Tool"
     },
     {
@@ -143,7 +143,7 @@
         700,
         700
       ],
-      "id": "vector-store-products-01",
+      "id": "manager-vector-products-01",
       "name": "Products Vector Store"
     },
     {
@@ -156,7 +156,7 @@
         700,
         860
       ],
-      "id": "embeddings-products-01",
+      "id": "manager-embeddings-products-01",
       "name": "Products Embeddings",
       "credentials": {
         "openAiApi": {
@@ -166,7 +166,7 @@
     },
     {
       "parameters": {
-        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "chatId": "={{ $('Telegram Owner Trigger').first().json.message.chat.id }}",
         "text": "={{ $json.output }}",
         "additionalFields": {}
       },
@@ -176,28 +176,28 @@
         860,
         300
       ],
-      "id": "telegram-send-01",
+      "id": "manager-telegram-send-01",
       "name": "Telegram Send Reply",
       "credentials": {
         "telegramApi": {
-          "name": "Telegram Support Bot"
+          "name": "Telegram Manager Bot"
         }
       }
     }
   ],
   "connections": {
-    "Telegram Trigger": {
+    "Telegram Owner Trigger": {
       "main": [
         [
           {
-            "node": "Customer Support Agent",
+            "node": "Manager Executive Agent",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Customer Support Agent": {
+    "Manager Executive Agent": {
       "main": [
         [
           {
@@ -212,7 +212,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "Customer Support Agent",
+            "node": "Manager Executive Agent",
             "type": "ai_languageModel",
             "index": 0
           },
@@ -233,7 +233,7 @@
       "ai_tool": [
         [
           {
-            "node": "Customer Support Agent",
+            "node": "Manager Executive Agent",
             "type": "ai_tool",
             "index": 0
           }
@@ -266,7 +266,7 @@
       "ai_tool": [
         [
           {
-            "node": "Customer Support Agent",
+            "node": "Manager Executive Agent",
             "type": "ai_tool",
             "index": 0
           }

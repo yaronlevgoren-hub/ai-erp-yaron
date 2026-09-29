@@ -60,12 +60,15 @@ class AppStore {
     const raw = localStorage.getItem(key);
     if (raw) {
       try {
-        return JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length >= defaultData.length) {
+          return parsed;
+        }
       } catch (e) {
         console.error(`Failed to parse table ${key}`, e);
       }
     }
-    // שמירת ברירת המחדל
+    // שמירת ברירת המחדל המעודכנת
     localStorage.setItem(key, JSON.stringify(defaultData));
     return JSON.parse(JSON.stringify(defaultData));
   }

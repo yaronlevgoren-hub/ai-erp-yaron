@@ -1,0 +1,101 @@
+{
+  "base": "AI-ERP Yaron",
+  "baseId": "app1I4nXfNOqHt15l",
+  "currencySymbol": "₪",
+  "_notes": [
+    "Single source of truth for the ERP: the 8 Airtable tables, their fields and their types.",
+    "Field 'type' maps to an Airtable field type: text, email, phone, url, int, currency, percent, date, datetime, select, created.",
+    "Relationships are plain string foreign keys (e.g. CustomerId = 'CUST-0001'), not Airtable links.",
+    "'created' fields are Airtable 'Created time' fields. The Airtable Triggers need them.",
+    "The first field in each table is the primary field."
+  ],
+  "tables": [
+    {
+      "name": "Leads",
+      "trigger": true,
+      "fields": [
+        { "name": "Name", "type": "text", "primary": true, "required": true },
+        { "name": "Email", "type": "email" },
+        { "name": "Company", "type": "text" },
+        { "name": "Status", "type": "select", "options": ["New", "Contacted", "Qualified", "Lost"] },
+        { "name": "Created", "type": "created" }
+      ]
+    },
+    {
+      "name": "Customers",
+      "trigger": true,
+      "fields": [
+        { "name": "CustomerId", "type": "text", "primary": true, "required": true },
+        { "name": "Name", "type": "text", "required": true },
+        { "name": "Email", "type": "email" },
+        { "name": "Phone", "type": "phone" },
+        { "name": "Company", "type": "text" }
+      ]
+    },
+    {
+      "name": "Products",
+      "fields": [
+        { "name": "Name", "type": "text", "primary": true, "required": true },
+        { "name": "Category", "type": "text" },
+        { "name": "Price", "type": "currency", "symbol": "₪" },
+        { "name": "InStock", "type": "int" },
+        { "name": "Description", "type": "longtext" }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "fields": [
+        { "name": "Title", "type": "text", "primary": true, "required": true },
+        { "name": "Status", "type": "select", "options": ["To Do", "In Progress", "Done"] },
+        { "name": "DueDate", "type": "date" }
+      ]
+    },
+    {
+      "name": "Invoices",
+      "trigger": true,
+      "fields": [
+        { "name": "InvoiceNumber", "type": "text", "primary": true, "required": true },
+        { "name": "CustomerId", "type": "text" },
+        { "name": "Amount", "type": "currency", "symbol": "₪" },
+        { "name": "VatAmount", "type": "currency", "symbol": "₪" },
+        { "name": "Total", "type": "currency", "symbol": "₪" },
+        { "name": "Status", "type": "select", "options": ["Draft", "Validated", "Sent", "Paid"] },
+        { "name": "Created", "type": "created" }
+      ]
+    },
+    {
+      "name": "TaxInvoices",
+      "trigger": true,
+      "fields": [
+        { "name": "InvoiceNumber", "type": "text", "primary": true, "required": true },
+        { "name": "CustomerId", "type": "text" },
+        { "name": "Amount", "type": "currency", "symbol": "₪" },
+        { "name": "VatAmount", "type": "currency", "symbol": "₪" },
+        { "name": "Total", "type": "currency", "symbol": "₪" },
+        { "name": "Status", "type": "select", "options": ["Draft", "Validated", "Sent", "Paid"] },
+        { "name": "Created", "type": "created" }
+      ]
+    },
+    {
+      "name": "Receipts",
+      "trigger": true,
+      "fields": [
+        { "name": "ReceiptNumber", "type": "text", "primary": true, "required": true },
+        { "name": "CustomerId", "type": "text" },
+        { "name": "Amount", "type": "currency", "symbol": "₪" },
+        { "name": "Status", "type": "select", "options": ["Draft", "Validated", "Sent", "Paid"] },
+        { "name": "Created", "type": "created" }
+      ]
+    },
+    {
+      "name": "Orders",
+      "fields": [
+        { "name": "OrderId", "type": "text", "primary": true, "required": true },
+        { "name": "CustomerId", "type": "text" },
+        { "name": "Total", "type": "currency", "symbol": "₪" },
+        { "name": "Status", "type": "select", "options": ["Pending", "Shipped", "Delivered", "Cancelled"] },
+        { "name": "Created", "type": "created" }
+      ]
+    }
+  ]
+}

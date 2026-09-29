@@ -1,0 +1,52 @@
+<!doctype html>
+<!-- Receipt (קבלה) template for AI Electronics. Rendered to PDF by n8n. -->
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="utf-8">
+  <title>קבלה {{docNumber}}</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: "Arial", sans-serif; color: #1b2333; margin: 0; padding: 48px; font-size: 14px; direction: rtl; }
+    .header { border-bottom: 3px solid #0f766e; padding-bottom: 16px; display: flex; justify-content: space-between; }
+    .header h1 { margin: 0; color: #0f766e; font-size: 26px; }
+    .header .company { color: #4b5563; font-size: 12px; margin-top: 6px; line-height: 1.6; text-align: left; }
+    .title { margin-top: 28px; font-size: 22px; color: #0f766e; }
+    .meta { margin-top: 16px; }
+    .meta p { margin: 6px 0; }
+    .amount { margin-top: 28px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 8px; padding: 20px; text-align: center; }
+    .amount .label { color: #047857; font-size: 14px; font-weight: bold; margin-bottom: 6px; }
+    .amount .value { font-size: 32px; font-weight: bold; color: #0f766e; direction: ltr; }
+    .footer { margin-top: 48px; border-top: 1px solid #e5e7eb; padding-top: 12px; font-size: 11px; color: #9ca3af; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>איי.איי אלקטרוניקה בע"מ</h1>
+      <div>קבלה על תשלום</div>
+    </div>
+    <div class="company">
+      <div>ח.פ: 515-678-923</div>
+      <div>רח' הברזל 30, תל אביב</div>
+    </div>
+  </div>
+
+  <div class="title">קבלה מס' {{docNumber}}</div>
+
+  <div class="meta">
+    <p><strong>תאריך:</strong> {{date}}</p>
+    <p><strong>התקבל מאת:</strong> {{customerName}} ({{customerId}})</p>
+    <p><strong>בגין:</strong> {{description}}</p>
+    <p><strong>אמצעי תשלום:</strong> {{paymentMethod}}</p>
+  </div>
+
+  <div class="amount">
+    <div class="label">סה"כ נתקבל בפועל</div>
+    <div class="value">₪{{amount}}</div>
+  </div>
+
+  <div class="footer">
+    הופק באמצעות n8n ERP | מסמך ממוחשב
+  </div>
+</body>
+</html>

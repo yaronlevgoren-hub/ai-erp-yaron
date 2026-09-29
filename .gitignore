@@ -1,0 +1,13 @@
+# Secrets — never commit real keys
+.env
+*.local
+dashboard.html
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor & temp files
+*.bak
+*.tmp
+node_modules/

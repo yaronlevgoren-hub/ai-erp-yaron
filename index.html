@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-ERP — איי.איי אלקטרוניקה בע"מ</title>
+  <!-- Google Fonts: Assistant & Heebo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Assistant', 'Heebo', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans antialiased min-h-screen flex flex-col md:flex-row">
+
+  <!-- Sidebar Navigation -->
+  <aside class="w-full md:w-64 bg-slate-900 text-slate-100 flex flex-col shrink-0 shadow-xl border-l border-slate-800 z-20">
+    <div class="p-5 flex items-center justify-between border-b border-slate-800">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/30">
+          AI
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-tight tracking-wide text-white">איי.איי אלקטרוניקה</h1>
+          <p class="text-xs text-blue-400 font-medium">מערכת ERP מבוססת AI</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="p-3 flex-1 space-y-1 overflow-y-auto">
+      <button onclick="navigate('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all bg-blue-600 text-white">
+        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+        <span>לוח בקרה (Dashboard)</span>
+      </button>
+
+      <button onclick="navigate('customers')" id="nav-customers" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="users" class="w-5 h-5"></i>
+        <span>לקוחות (Customers)</span>
+      </button>
+
+      <button onclick="navigate('leads')" id="nav-leads" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="target" class="w-5 h-5"></i>
+        <span>לידים ומכירות (Leads)</span>
+        <span id="badge-leads-count" class="mr-auto bg-blue-500/20 text-blue-300 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+      </button>
+
+      <button onclick="navigate('orders')" id="nav-orders" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+        <span>הזמנות (Orders)</span>
+      </button>
+
+      <button onclick="navigate('invoices')" id="nav-invoices" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="file-text" class="w-5 h-5"></i>
+        <span>חשבוניות מס (Invoices)</span>
+        <span class="mr-auto bg-emerald-500/20 text-emerald-400 text-xs px-2 py-0.5 rounded-full font-bold">18% מע"מ</span>
+      </button>
+
+      <button onclick="navigate('products')" id="nav-products" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="package" class="w-5 h-5"></i>
+        <span>קטלוג ומלאי (Products)</span>
+      </button>
+
+      <button onclick="navigate('tasks')" id="nav-tasks" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+        <i data-lucide="check-square" class="w-5 h-5"></i>
+        <span>משימות פנימיות (Tasks)</span>
+      </button>
+
+      <div class="pt-4 mt-4 border-t border-slate-800">
+        <button onclick="navigate('settings')" id="nav-settings" class="nav-item w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span>הגדרות ואינטגרציות</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-800 bg-slate-950/40 text-xs text-slate-400 space-y-2">
+      <div class="flex items-center justify-between">
+        <span>סטטוס מערכת:</span>
+        <span id="system-status-indicator" class="flex items-center gap-1.5 text-emerald-400 font-semibold">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          פעיל
+        </span>
+      </div>
+      <div class="flex items-center justify-between text-slate-500">
+        <span>מע"מ בישראל:</span>
+        <span class="text-slate-300 font-bold">18% (מ-1.1.25)</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Top Header -->
+    <header class="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 sticky top-0 z-10 shadow-sm">
+      <div class="flex items-center gap-3">
+        <h2 id="current-view-title" class="text-xl font-bold text-slate-800">לוח בקרה</h2>
+        <span id="view-mode-pill" class="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-0.5 rounded-full font-semibold">
+          מצב מקומי (John Bryce Store)
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Quick Action AI Button -->
+        <button onclick="toggleChat(true)" class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-3.5 py-2 rounded-lg text-sm font-bold shadow-md shadow-blue-500/20 transition-all">
+          <i data-lucide="bot" class="w-4 h-4"></i>
+          <span>סוכן AI חכם</span>
+        </button>
+
+        <!-- User Badge -->
+        <div class="flex items-center gap-2 pr-3 border-r border-slate-200">
+          <div class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs">
+            YL
+          </div>
+          <div class="hidden sm:block text-right">
+            <div class="text-xs font-bold text-slate-800">ירון לבגורן</div>
+            <div class="text-[11px] text-slate-500">מנהל מערכת</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic Main Views -->
+    <main class="flex-1 p-6 overflow-y-auto bg-slate-50">
+
+      <!-- VIEW: DASHBOARD -->
+      <section id="view-dashboard" class="space-y-6">
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <div class="flex items-center justify-between text-slate-500 mb-2">
+              <span class="text-sm font-semibold">הכנסות ששולמו</span>
+              <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <i data-lucide="coins" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div id="kpi-revenue" class="text-2xl font-extrabold text-slate-900">₪ 0</div>
+            <p class="text-xs text-slate-400 mt-1">חשבוניות מס ששולמו</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <div class="flex items-center justify-between text-slate-500 mb-2">
+              <span class="text-sm font-semibold">הזמנות פתוחות</span>
+              <div class="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div id="kpi-orders" class="text-2xl font-extrabold text-slate-900">0</div>
+            <p class="text-xs text-slate-400 mt-1">ממתינות לעיבוד והפקה</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <div class="flex items-center justify-between text-slate-500 mb-2">
+              <span class="text-sm font-semibold">לידים פעילים</span>
+              <div class="w-9 h-9 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                <i data-lucide="user-plus" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div id="kpi-leads" class="text-2xl font-extrabold text-slate-900">0</div>
+            <p class="text-xs text-slate-400 mt-1">בצינור המכירות (Leads)</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <div class="flex items-center justify-between text-slate-500 mb-2">
+              <span class="text-sm font-semibold">משימות פתוחות</span>
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                <i data-lucide="clock" class="w-5 h-5"></i>
+              </div>
+            </div>
+            <div id="kpi-tasks" class="text-2xl font-extrabold text-slate-900">0</div>
+            <p class="text-xs text-slate-400 mt-1">משימות תפעול פתוחות</p>
+          </div>
+        </div>
+
+        <!-- Proactive Alerts Banner (WF9 Manager Agent Insights) -->
+        <div class="bg-gradient-to-l from-slate-900 to-indigo-950 text-white rounded-xl p-6 shadow-md border border-slate-800">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center text-white">
+              <i data-lucide="sparkles" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-base">התראות מנהל פרואקטיביות (WF9 Manager Agent)</h3>
+              <p class="text-xs text-slate-300">תובנות עסקיות מנותחות אוטומטית לפי חוקי העסק</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="alerts-container">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Recent Invoices & Quick Inflow -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-slate-800 text-base">חשבוניות מס אחרונות</h3>
+              <button onclick="navigate('invoices')" class="text-xs text-blue-600 hover:underline font-semibold">לכל החשבוניות &larr;</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-right">
+                <thead>
+                  <tr class="border-b border-slate-100 text-xs text-slate-400">
+                    <th class="pb-2">מס'</th>
+                    <th class="pb-2">לקוח</th>
+                    <th class="pb-2">סכום</th>
+                    <th class="pb-2">סטטוס</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-invoices" class="divide-y divide-slate-100">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-slate-800 text-base">הזמנות אחרונות</h3>
+              <button onclick="navigate('orders')" class="text-xs text-blue-600 hover:underline font-semibold">לכל ההזמנות &larr;</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm text-right">
+                <thead>
+                  <tr class="border-b border-slate-100 text-xs text-slate-400">
+                    <th class="pb-2">הזמנה</th>
+                    <th class="pb-2">לקוח</th>
+                    <th class="pb-2">סה"כ</th>
+                    <th class="pb-2">סטטוס</th>
+                  </tr>
+                </thead>
+                <tbody id="dashboard-recent-orders" class="divide-y divide-slate-100">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: CUSTOMERS -->
+      <section id="view-customers" class="hidden space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2 flex-1 max-w-md">
+            <div class="relative w-full">
+              <i data-lucide="search" class="w-4 h-4 absolute right-3 top-3 text-slate-400"></i>
+              <input type="text" id="customer-search" oninput="renderCustomers()" placeholder="חיפוש לקוח לפי שם, חברה או אימייל..." class="w-full pr-9 pl-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+          <button onclick="openAddCustomerModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>הוסף לקוח חדש</span>
+          </button>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-right">
+            <thead class="bg-slate-50 border-b border-slate-200 text-xs text-slate-500 font-bold uppercase">
+              <tr>
+                <th class="p-3.5">מזהה (CUST)</th>
+                <th class="p-3.5">שם לקוח</th>
+                <th class="p-3.5">חברה</th>
+                <th class="p-3.5">אימייל</th>
+                <th class="p-3.5">טלפון</th>
+                <th class="p-3.5">סיווג</th>
+                <th class="p-3.5">פעולות</th>
+              </tr>
+            </thead>
+            <tbody id="customers-table-body" class="divide-y divide-slate-200">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW: LEADS -->
+      <section id="view-leads" class="hidden space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2 flex-1 max-w-md">
+            <div class="relative w-full">
+              <i data-lucide="search" class="w-4 h-4 absolute right-3 top-3 text-slate-400"></i>
+              <input type="text" id="lead-search" oninput="renderLeads()" placeholder="חיפוש לידים..." class="w-full pr-9 pl-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+          <button onclick="openAddLeadModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>הוסף ליד (Lead Intake)</span>
+          </button>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-right">
+            <thead class="bg-slate-50 border-b border-slate-200 text-xs text-slate-500 font-bold uppercase">
+              <tr>
+                <th class="p-3.5">מזהה</th>
+                <th class="p-3.5">שם מלא</th>
+                <th class="p-3.5">חברה</th>
+                <th class="p-3.5">אימייל</th>
+                <th class="p-3.5">סטטוס</th>
+                <th class="p-3.5">תאריך יצירה</th>
+                <th class="p-3.5">פעולות סוכן</th>
+              </tr>
+            </thead>
+            <tbody id="leads-table-body" class="divide-y divide-slate-200">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW: ORDERS -->
+      <section id="view-orders" class="hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-lg text-slate-800">הזמנות ומכירות</h3>
+          <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full font-medium">כולל חישוב מע"מ 18%</span>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-right">
+            <thead class="bg-slate-50 border-b border-slate-200 text-xs text-slate-500 font-bold uppercase">
+              <tr>
+                <th class="p-3.5">מספר הזמנה</th>
+                <th class="p-3.5">לקוח</th>
+                <th class="p-3.5">תאריך</th>
+                <th class="p-3.5">לפני מע"מ</th>
+                <th class="p-3.5">מע"מ (18%)</th>
+                <th class="p-3.5">סה"כ לתשלום</th>
+                <th class="p-3.5">סטטוס</th>
+                <th class="p-3.5">פעולות</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body" class="divide-y divide-slate-200">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW: INVOICES -->
+      <section id="view-invoices" class="hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-lg text-slate-800">חשבוניות מס ישראליות (Tax Invoices)</h3>
+            <p class="text-xs text-slate-500">תואם חוק מע"מ 18% בתוקף מ-1.1.2025 ומספור רציף</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="badge badge-green font-bold">18% מע"מ חוקי</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <table class="w-full text-sm text-right">
+            <thead class="bg-slate-50 border-b border-slate-200 text-xs text-slate-500 font-bold uppercase">
+              <tr>
+                <th class="p-3.5">מספר חשבונית</th>
+                <th class="p-3.5">לקוח</th>
+                <th class="p-3.5">תאריך</th>
+                <th class="p-3.5">סכום נטו</th>
+                <th class="p-3.5">מע"מ (18%)</th>
+                <th class="p-3.5">סה"כ לתשלום</th>
+                <th class="p-3.5">תנאי תשלום</th>
+                <th class="p-3.5">סטטוס</th>
+                <th class="p-3.5">מסמך</th>
+              </tr>
+            </thead>
+            <tbody id="invoices-table-body" class="divide-y divide-slate-200">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VIEW: PRODUCTS -->
+      <section id="view-products" class="hidden space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-2 flex-1 max-w-md">
+            <div class="relative w-full">
+              <i data-lucide="search" class="w-4 h-4 absolute right-3 top-3 text-slate-400"></i>
+              <input type="text" id="product-search" oninput="renderProducts()" placeholder="חיפוש לפי שם, מק\"ט או קטגוריה..." class="w-full pr-9 pl-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 font-medium">
+            כל המחירים כוללים 18% מע"מ ואחריות יבואן רשמי
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="products-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- VIEW: TASKS -->
+      <section id="view-tasks" class="hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-lg text-slate-800">משימות פנימיות ו-Dispatch</h3>
+          <button onclick="openAddTaskModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>הוסף משימה</span>
+          </button>
+        </div>
+
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3" id="tasks-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- VIEW: SETTINGS -->
+      <section id="view-settings" class="hidden space-y-6 max-w-3xl">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
+          <div>
+            <h3 class="font-bold text-lg text-slate-800">הגדרות ואינטגרציות (n8n Cloud & Airtable)</h3>
+            <p class="text-xs text-slate-500">הגדרות חיבור לשרת ה-Webhook ולבסיס הנתונים של John Bryce</p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-1">Airtable Base ID</label>
+              <input type="text" id="setting-airtable-base" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" value="app1I4nXfNOqHt15l">
+              <p class="text-xs text-slate-400 mt-1">מזהה הבסיס שיצרנו ב-Airtable (AI-ERP Yaron)</p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-1">Airtable Personal Access Token (PAT)</label>
+              <input type="password" id="setting-airtable-pat" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="pat...">
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-1">כתובת n8n Webhook (Production URL)</label>
+              <input type="text" id="setting-n8n-webhook" class="w-full px-3.5 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none" placeholder="https://<your-n8n-instance>.app.n8n.cloud/webhook/erp-hub">
+              <p class="text-xs text-slate-400 mt-1">מאזין לפרוטוקול POST { action, table, payload } ו-{ action: "chat", message }</p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+              <div>
+                <div class="font-bold text-sm text-slate-800">מצב סנכרון חי (Live Cloud Mode)</div>
+                <div class="text-xs text-slate-500">כשכבוי, המערכת פועלת במצב מקומי עמיד עם 100% פונקציונליות</div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="setting-live-mode" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+            <button onclick="saveAppSettings()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-5 py-2 rounded-lg shadow-sm">
+              שמור הגדרות
+            </button>
+            <button onclick="resetDataDefaults()" class="text-xs text-red-600 hover:underline">
+              אפס נתוני דמו לברירת מחדל
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- AI Chat Assistant Floating Drawer / Panel -->
+  <div id="ai-chat-drawer" class="fixed bottom-4 left-4 z-50 w-96 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all duration-300 transform translate-y-[120%] opacity-0 pointer-events-none">
+    <!-- Chat Header -->
+    <div class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white p-4 flex items-center justify-between shadow">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+          <i data-lucide="bot" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm">סוכן שירות ומנהל AI</h4>
+          <span class="text-[11px] text-blue-200 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            מעוגן ב-12 קובצי המדיניות (RAG)
+          </span>
+        </div>
+      </div>
+      <button onclick="toggleChat(false)" class="text-white/80 hover:text-white p-1 rounded-lg">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Quick Prompts Chips -->
+    <div class="p-2.5 bg-slate-50 border-b border-slate-100 flex items-center gap-1.5 overflow-x-auto text-[11px]">
+      <button onclick="sendQuickPrompt('מה מדיניות ההחזרות והביטולים?')" class="bg-white border border-slate-200 px-2 py-1 rounded-full text-slate-700 font-medium hover:bg-blue-50 hover:border-blue-200 shrink-0">
+        מדיניות החזרות
+      </button>
+      <button onclick="sendQuickPrompt('כמה מע\"מ נגבה והאם יש חשבונית מס?')" class="bg-white border border-slate-200 px-2 py-1 rounded-full text-slate-700 font-medium hover:bg-blue-50 hover:border-blue-200 shrink-0">
+        מע"מ 18%
+      </button>
+      <button onclick="sendQuickPrompt('האם יש לכם מחשבי מקבוק במלאי?')" class="bg-white border border-slate-200 px-2 py-1 rounded-full text-slate-700 font-medium hover:bg-blue-50 hover:border-blue-200 shrink-0">
+        בדיקת מלאי
+      </button>
+      <button onclick="sendQuickPrompt('מה תנאי האחריות הרשמית?')" class="bg-white border border-slate-200 px-2 py-1 rounded-full text-slate-700 font-medium hover:bg-blue-50 hover:border-blue-200 shrink-0">
+        אחריות
+      </button>
+    </div>
+
+    <!-- Chat Messages Scroll Area -->
+    <div id="chat-messages" class="p-4 space-y-3 h-80 overflow-y-auto bg-slate-50 text-sm">
+      <!-- Rendered dynamically -->
+    </div>
+
+    <!-- Chat Input Area -->
+    <form onsubmit="handleChatSubmit(event)" class="p-3 bg-white border-t border-slate-200 flex items-center gap-2">
+      <input type="text" id="chat-input" placeholder="שאל על מדיניות, מחירים, מלאי או חשבוניות..." class="flex-1 px-3.5 py-2 text-sm bg-slate-100 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg font-bold transition-all shadow-sm">
+        <i data-lucide="send" class="w-4 h-4"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- Printable Tax Invoice Modal -->
+  <div id="invoice-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 relative">
+      <button onclick="closeInvoiceModal()" class="no-print absolute left-4 top-4 text-slate-400 hover:text-slate-600">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+
+      <div id="invoicePrintArea">
+        <!-- Rendered dynamically from invoice data -->
+      </div>
+
+      <div class="no-print mt-6 pt-4 border-t border-slate-200 flex items-center justify-between">
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm">
+          <i data-lucide="printer" class="w-4 h-4"></i>
+          <span>הדפס / שמור כ-PDF</span>
+        </button>
+        <button onclick="closeInvoiceModal()" class="text-sm text-slate-500 hover:underline">
+          סגור
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ai-agent.js"></script>
+
+  <!-- Application Controller Logic -->
+  <script>
+    const agent = new AIAgentEngine();
+
+    // ניווט בין מסכים
+    function navigate(viewName) {
+      const views = ['dashboard', 'customers', 'leads', 'orders', 'invoices', 'products', 'tasks', 'settings'];
+      views.forEach(v => {
+        const el = document.getElementById(`view-${v}`);
+        const navEl = document.getElementById(`nav-${v}`);
+        if (el) el.classList.add('hidden');
+        if (navEl) {
+          navEl.classList.remove('bg-blue-600', 'text-white');
+          navEl.classList.add('text-slate-300');
+        }
+      });
+
+      const targetView = document.getElementById(`view-${viewName}`);
+      const targetNav = document.getElementById(`nav-${viewName}`);
+      if (targetView) targetView.classList.remove('hidden');
+      if (targetNav) {
+        targetNav.classList.add('bg-blue-600', 'text-white');
+        targetNav.classList.remove('text-slate-300');
+      }
+
+      const titles = {
+        dashboard: 'לוח בקרה (Dashboard)',
+        customers: 'ניהול לקוחות (Customers)',
+        leads: 'לידים ומכירות (Leads)',
+        orders: 'ניהול הזמנות (Orders)',
+        invoices: 'חשבוניות מס (Invoices)',
+        products: 'קטלוג מוצרים ומלאי (Products)',
+        tasks: 'ניהול משימות (Tasks)',
+        settings: 'הגדרות ואינטגרציות'
+      };
+      document.getElementById('current-view-title').innerText = titles[viewName] || 'לוח בקרה';
+
+      // רענון נתונים לתצוגה הפעילה
+      if (viewName === 'dashboard') renderDashboard();
+      if (viewName === 'customers') renderCustomers();
+      if (viewName === 'leads') renderLeads();
+      if (viewName === 'orders') renderOrders();
+      if (viewName === 'invoices') renderInvoices();
+      if (viewName === 'products') renderProducts();
+      if (viewName === 'tasks') renderTasks();
+    }
+
+    // רינדור לוח הבקרה
+    function renderDashboard() {
+      const metrics = store.getMetrics();
+      document.getElementById('kpi-revenue').innerText = `₪ ${metrics.totalRevenue.toLocaleString()}`;
+      document.getElementById('kpi-orders').innerText = metrics.pendingOrders;
+      document.getElementById('kpi-leads').innerText = metrics.activeLeads;
+      document.getElementById('kpi-tasks').innerText = metrics.openTasks;
+
+      // התראות פרואקטיביות
+      const alertsEl = document.getElementById('alerts-container');
+      alertsEl.innerHTML = `
+        <div class="bg-white/10 rounded-lg p-3.5 border border-white/10">
+          <div class="flex items-center gap-2 text-amber-300 font-bold text-sm mb-1">
+            <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+            <span>חשבוניות פתוחות (${metrics.overdueInvoices.length})</span>
+          </div>
+          <p class="text-xs text-slate-200">ישנן חשבוניות שממתינות לתשלום או דורשות תזכורת מעבר לשוטף+30.</p>
+        </div>
+        <div class="bg-white/10 rounded-lg p-3.5 border border-white/10">
+          <div class="flex items-center gap-2 text-rose-300 font-bold text-sm mb-1">
+            <i data-lucide="package-x" class="w-4 h-4"></i>
+            <span>התראות מלאי נמוך (${metrics.lowStockProducts.length})</span>
+          </div>
+          <p class="text-xs text-slate-200">מוצרים שהגיעו למלאי מינימלי ודורשים הזמנת רכש מספק.</p>
+        </div>
+        <div class="bg-white/10 rounded-lg p-3.5 border border-white/10">
+          <div class="flex items-center gap-2 text-emerald-300 font-bold text-sm mb-1">
+            <i data-lucide="flame" class="w-4 h-4"></i>
+            <span>לידים מוסמכים (${metrics.hotLeads.length})</span>
+          </div>
+          <p class="text-xs text-slate-200">לידים בעלי עניין גבוה המוכנים לפנייה ישירה מסוכן המכירות.</p>
+        </div>
+      `;
+
+      // חשבוניות אחרונות
+      const recentInv = store.getAll('invoices').slice(0, 5);
+      const invBody = document.getElementById('dashboard-recent-invoices');
+      invBody.innerHTML = recentInv.map(inv => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 font-bold text-blue-600">${inv.id}</td>
+          <td class="py-2.5">${inv.customerName || inv.customerId}</td>
+          <td class="py-2.5 font-semibold">₪ ${(inv.total || inv.amount).toLocaleString()}</td>
+          <td class="py-2.5"><span class="badge ${inv.status === 'שולם' ? 'badge-green' : 'badge-amber'}">${inv.status}</span></td>
+        </tr>
+      `).join('');
+
+      // הזמנות אחרונות
+      const recentOrd = store.getAll('orders').slice(0, 5);
+      const ordBody = document.getElementById('dashboard-recent-orders');
+      ordBody.innerHTML = recentOrd.map(ord => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 font-bold text-slate-700">${ord.id}</td>
+          <td class="py-2.5">${ord.customerName}</td>
+          <td class="py-2.5 font-semibold">₪ ${ord.total.toLocaleString()}</td>
+          <td class="py-2.5"><span class="badge ${ord.status === 'סופק' ? 'badge-green' : 'badge-blue'}">${ord.status}</span></td>
+        </tr>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    // רינדור לקוחות
+    function renderCustomers() {
+      const search = (document.getElementById('customer-search').value || '').toLowerCase();
+      const customers = store.getAll('customers').filter(c => 
+        c.name.toLowerCase().includes(search) || 
+        c.company.toLowerCase().includes(search) || 
+        c.email.toLowerCase().includes(search)
+      );
+
+      const tbody = document.getElementById('customers-table-body');
+      tbody.innerHTML = customers.map(c => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3.5 font-mono text-xs font-bold text-blue-600">${c.id}</td>
+          <td class="p-3.5 font-bold text-slate-800">${c.name}</td>
+          <td class="p-3.5">${c.company}</td>
+          <td class="p-3.5 text-slate-500">${c.email}</td>
+          <td class="p-3.5 text-slate-500">${c.phone}</td>
+          <td class="p-3.5"><span class="badge ${c.type === 'B2B' ? 'badge-blue' : 'badge-purple'}">${c.type || 'B2C'}</span></td>
+          <td class="p-3.5">
+            <button onclick="alert('לקוח ${c.name} מסונכרן מול Airtable')" class="text-xs text-blue-600 hover:underline font-semibold">פרטים</button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // רינדור לידים
+    function renderLeads() {
+      const search = (document.getElementById('lead-search').value || '').toLowerCase();
+      const leads = store.getAll('leads').filter(l => 
+        l.name.toLowerCase().includes(search) || 
+        l.company.toLowerCase().includes(search) || 
+        l.email.toLowerCase().includes(search)
+      );
+
+      document.getElementById('badge-leads-count').innerText = leads.length;
+
+      const tbody = document.getElementById('leads-table-body');
+      tbody.innerHTML = leads.map(l => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3.5 font-mono text-xs font-bold text-slate-600">${l.id}</td>
+          <td class="p-3.5 font-bold text-slate-800">${l.name}</td>
+          <td class="p-3.5">${l.company}</td>
+          <td class="p-3.5 text-slate-500">${l.email}</td>
+          <td class="p-3.5"><span class="badge ${l.status.includes('מוסמך') ? 'badge-green' : l.status.includes('חדש') ? 'badge-blue' : 'badge-amber'}">${l.status}</span></td>
+          <td class="p-3.5 text-slate-400 text-xs">${l.createdAt || 'היום'}</td>
+          <td class="p-3.5">
+            <button onclick="triggerSalesPitch('${l.id}')" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2 py-1 rounded font-semibold transition-all">
+              פנייה קרה (WF4a)
+            </button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // סימולציית פנייה קרה
+    function triggerSalesPitch(leadId) {
+      const lead = store.getById('leads', leadId);
+      if (!lead) return;
+      alert(`סוכן המכירות (WF4a) ניסח פנייה קרה מותאמת אישית ל-${lead.name} בחברת ${lead.company} בנושא עסקאות B2B והנחות כמות.`);
+    }
+
+    // רינדור הזמנות
+    function renderOrders() {
+      const orders = store.getAll('orders');
+      const tbody = document.getElementById('orders-table-body');
+      tbody.innerHTML = orders.map(ord => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3.5 font-mono text-xs font-bold text-blue-600">${ord.id}</td>
+          <td class="p-3.5 font-bold text-slate-800">${ord.customerName}</td>
+          <td class="p-3.5 text-slate-500">${ord.createdAt}</td>
+          <td class="p-3.5">₪ ${ord.subtotal.toLocaleString()}</td>
+          <td class="p-3.5 text-slate-500 font-medium">₪ ${ord.vatAmount.toLocaleString()}</td>
+          <td class="p-3.5 font-bold text-slate-900">₪ ${ord.total.toLocaleString()}</td>
+          <td class="p-3.5"><span class="badge ${ord.status === 'סופק' ? 'badge-green' : 'badge-blue'}">${ord.status}</span></td>
+          <td class="p-3.5">
+            <button onclick="generateInvoiceFromOrder('${ord.id}')" class="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold px-2 py-1 rounded">
+              הפק חשבונית מס
+            </button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function generateInvoiceFromOrder(orderId) {
+      const order = store.getById('orders', orderId);
+      if (!order) return;
+      const inv = store.createInvoiceFromOrder(order);
+      alert(`הופקה חשבונית מס ${inv.id} על סך ₪ ${inv.total.toLocaleString()} כולל 18% מע"מ.`);
+      navigate('invoices');
+    }
+
+    // רינדור חשבוניות
+    function renderInvoices() {
+      const invoices = store.getAll('invoices');
+      const tbody = document.getElementById('invoices-table-body');
+      tbody.innerHTML = invoices.map(inv => `
+        <tr class="hover:bg-slate-50">
+          <td class="p-3.5 font-mono text-xs font-bold text-blue-600">${inv.id}</td>
+          <td class="p-3.5 font-bold text-slate-800">${inv.customerName || inv.customerId}</td>
+          <td class="p-3.5 text-slate-500">${inv.date || inv.createdAt}</td>
+          <td class="p-3.5">₪ ${(inv.amount || 0).toLocaleString()}</td>
+          <td class="p-3.5 text-slate-500">₪ ${(inv.vatAmount || 0).toLocaleString()}</td>
+          <td class="p-3.5 font-bold text-slate-900">₪ ${(inv.total || inv.amount).toLocaleString()}</td>
+          <td class="p-3.5 text-slate-500 text-xs">${inv.paymentTerms || 'שוטף+30'}</td>
+          <td class="p-3.5"><span class="badge ${inv.status === 'שולם' ? 'badge-green' : 'badge-amber'}">${inv.status}</span></td>
+          <td class="p-3.5">
+            <button onclick="viewInvoiceModal('${inv.id}')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-2.5 py-1 rounded flex items-center gap-1">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+              <span>צפה בחשבונית</span>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // תצוגת חשבונית מס מקצועית
+    function viewInvoiceModal(invoiceId) {
+      const inv = store.getById('invoices', invoiceId);
+      if (!inv) return;
+
+      const printArea = document.getElementById('invoicePrintArea');
+      printArea.innerHTML = `
+        <div class="border-b-2 border-slate-900 pb-4 mb-4 flex justify-between items-start">
+          <div>
+            <h2 class="text-2xl font-black text-slate-900 leading-tight">איי.איי אלקטרוניקה בע"מ</h2>
+            <p class="text-xs text-slate-500">מוצרי אלקטרוניקה מקוריים | אחריות יבואן רשמי</p>
+            <div class="mt-2 text-xs text-slate-600 space-y-0.5">
+              <div><strong>ח.פ:</strong> 515-678-923 (עוסק מורשה)</div>
+              <div>רחוב הברזל 30, רמת החייל, תל אביב | טלפון: 03-555-1234</div>
+            </div>
+          </div>
+          <div class="text-left">
+            <div class="inline-block bg-slate-900 text-white font-extrabold text-sm px-3 py-1 rounded">חשבונית מס / קבלה</div>
+            <div class="text-sm font-bold text-slate-800 mt-1">${inv.id}</div>
+            <div class="text-xs text-slate-500">תאריך: ${inv.date || inv.createdAt}</div>
+          </div>
+        </div>
+
+        <div class="mb-6 bg-slate-50 p-3.5 rounded-lg border border-slate-200">
+          <div class="text-xs text-slate-400 font-bold mb-1">פרטי הלקוח:</div>
+          <div class="font-bold text-slate-900">${inv.customerName || inv.customerId}</div>
+          <div class="text-xs text-slate-600">מזהה לקוח: ${inv.customerId} | תנאי תשלום: ${inv.paymentTerms || 'שוטף+30'}</div>
+        </div>
+
+        <table class="w-full text-sm text-right mb-6">
+          <thead class="bg-slate-900 text-white text-xs">
+            <tr>
+              <th class="p-2.5">תיאור הפריט</th>
+              <th class="p-2.5 text-center">כמות</th>
+              <th class="p-2.5">מחיר יחידה</th>
+              <th class="p-2.5">סה"כ</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            ${(inv.items || [{ description: 'עסקת אלקטרוניקה כללית', qty: 1, unitPrice: inv.amount, amount: inv.amount }]).map(it => `
+              <tr>
+                <td class="p-2.5">${it.description}</td>
+                <td class="p-2.5 text-center">${it.qty}</td>
+                <td class="p-2.5">₪ ${(it.unitPrice || 0).toLocaleString()}</td>
+                <td class="p-2.5 font-bold">₪ ${(it.amount || 0).toLocaleString()}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <div class="flex justify-end">
+          <div class="w-64 space-y-1.5 text-sm border-t border-slate-200 pt-3">
+            <div class="flex justify-between text-slate-600">
+              <span>סכום נטו (לפני מע"מ):</span>
+              <span>₪ ${(inv.amount || 0).toLocaleString()}</span>
+            </div>
+            <div class="flex justify-between text-slate-600">
+              <span>מע"מ בשיעור 18%:</span>
+              <span>₪ ${(inv.vatAmount || 0).toLocaleString()}</span>
+            </div>
+            <div class="flex justify-between font-black text-base text-slate-900 border-t border-slate-900 pt-2">
+              <span>סה"כ לתשלום:</span>
+              <span>₪ ${(inv.total || inv.amount).toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 text-center text-xs text-slate-400 border-t border-slate-100 pt-3">
+          מסמך זה הופק בצורה ממוחשבת מתוך מערכת ה-ERP של איי.איי אלקטרוניקה בע"מ.
+        </div>
+      `;
+
+      document.getElementById('invoice-modal').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeInvoiceModal() {
+      document.getElementById('invoice-modal').classList.add('hidden');
+    }
+
+    // רינדור מוצרים
+    function renderProducts() {
+      const search = (document.getElementById('product-search').value || '').toLowerCase();
+      const products = store.getAll('products').filter(p => 
+        p.name.toLowerCase().includes(search) || 
+        (p.category && p.category.toLowerCase().includes(search)) ||
+        (p.sku && p.sku.toLowerCase().includes(search))
+      );
+
+      const container = document.getElementById('products-container');
+      container.innerHTML = products.map(p => `
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-medium">${p.category}</span>
+              <span class="text-xs font-mono text-slate-400">${p.sku || p.id}</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">${p.name}</h4>
+            <p class="text-xs text-slate-500 line-clamp-2 mb-3">${p.description}</p>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+            <div>
+              <div class="text-base font-extrabold text-blue-600">₪ ${p.price.toLocaleString()}</div>
+              <div class="text-[10px] text-slate-400">כולל 18% מע"מ</div>
+            </div>
+            <div class="text-right">
+              <span class="badge ${p.stock <= (p.minStock || 5) ? 'badge-red' : 'badge-green'} font-bold">
+                מלאי: ${p.stock} יח'
+              </span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // רינדור משימות
+    function renderTasks() {
+      const tasks = store.getAll('tasks');
+      const container = document.getElementById('tasks-container');
+      container.innerHTML = tasks.map(t => `
+        <div class="flex items-center justify-between p-3 rounded-lg border border-slate-100 hover:bg-slate-50">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" ${t.status === 'הושלם' ? 'checked' : ''} onchange="toggleTaskStatus('${t.id}')" class="w-4 h-4 rounded text-blue-600 focus:ring-blue-500">
+            <div>
+              <div class="font-bold text-sm ${t.status === 'הושלם' ? 'line-through text-slate-400' : 'text-slate-800'}">${t.title}</div>
+              <div class="text-xs text-slate-400">יעד: ${t.dueDate || 'היום'} | עדיפות: ${t.priority || 'רגיל'}</div>
+            </div>
+          </div>
+          <span class="badge ${t.status === 'הושלם' ? 'badge-green' : 'badge-amber'}">${t.status}</span>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function toggleTaskStatus(taskId) {
+      const t = store.getById('tasks', taskId);
+      if (!t) return;
+      const newStatus = t.status === 'הושלם' ? 'פתוח' : 'הושלם';
+      store.update('tasks', taskId, { status: newStatus });
+      renderTasks();
+    }
+
+    // ניהול צ'אט סוכן AI
+    function toggleChat(show) {
+      const drawer = document.getElementById('ai-chat-drawer');
+      if (show) {
+        drawer.classList.remove('translate-y-[120%]', 'opacity-0', 'pointer-events-none');
+        renderChatHistory();
+        setTimeout(() => document.getElementById('chat-input').focus(), 300);
+      } else {
+        drawer.classList.add('translate-y-[120%]', 'opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function renderChatHistory() {
+      const container = document.getElementById('chat-messages');
+      container.innerHTML = agent.history.map(msg => `
+        <div class="flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}">
+          <div class="max-w-[85%] rounded-2xl px-3.5 py-2 text-xs leading-relaxed shadow-sm ${msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-white text-slate-800 border border-slate-200 rounded-bl-none'}">
+            ${msg.text.replace(/\n/g, '<br>')}
+          </div>
+          <span class="text-[10px] text-slate-400 mt-1 px-1">${msg.time}</span>
+        </div>
+      `).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      agent.sendMessage(text);
+      renderChatHistory();
+
+      // הצגת אינדיקטור טעינה
+      const container = document.getElementById('chat-messages');
+      const typingDiv = document.createElement('div');
+      typingDiv.id = 'chat-typing-indicator';
+      typingDiv.className = 'text-xs text-slate-400 italic py-1';
+      typingDiv.innerText = 'הסוכן מעיין במדיניות החברה...';
+      container.appendChild(typingDiv);
+      container.scrollTop = container.scrollHeight;
+
+      setTimeout(() => {
+        const ind = document.getElementById('chat-typing-indicator');
+        if (ind) ind.remove();
+        renderChatHistory();
+      }, 500);
+    }
+
+    function sendQuickPrompt(promptText) {
+      document.getElementById('chat-input').value = promptText;
+      handleChatSubmit(new Event('submit'));
+    }
+
+    // הגדרות
+    function saveAppSettings() {
+      const base = document.getElementById('setting-airtable-base').value;
+      const pat = document.getElementById('setting-airtable-pat').value;
+      const webhook = document.getElementById('setting-n8n-webhook').value;
+      const isLive = document.getElementById('setting-live-mode').checked;
+
+      store.saveSettings({
+        airtableBaseId: base,
+        airtablePat: pat,
+        n8nWebhookUrl: webhook,
+        isLiveMode: isLive
+      });
+
+      document.getElementById('view-mode-pill').innerText = isLive ? 'מצב ענן חי (n8n Webhook)' : 'מצב מקומי (John Bryce Store)';
+      alert('ההגדרות נשמרו בהצלחה!');
+    }
+
+    function resetDataDefaults() {
+      if (confirm('האם לאפס את כל הנתונים לברירת המחדל המקורית?')) {
+        store.resetToDefaults();
+        navigate('dashboard');
+      }
+    }
+
+    // אתחול בעת טעינת הדף
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      navigate('dashboard');
+    });
+  </script>
+</body>
+</html>

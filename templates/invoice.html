@@ -1,0 +1,94 @@
+<!doctype html>
+<!--
+  Tax-invoice / invoice template for AI Electronics.
+  Rendered to PDF by n8n. Placeholders use {{token}} — the n8n "Build HTML"
+  Code node (WF8) replaces them. Self-contained CSS, RTL Hebrew.
+-->
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="utf-8">
+  <title>{{docTitle}} {{docNumber}}</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: "Arial", "Helvetica", sans-serif; color: #1b2333; margin: 0; padding: 48px; font-size: 14px; direction: rtl; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid #1f2d5a; padding-bottom: 16px; }
+    .brand h1 { margin: 0; color: #1f2d5a; font-size: 26px; }
+    .brand .tagline { color: #6b7280; font-size: 12px; margin-top: 4px; }
+    .company { text-align: left; font-size: 12px; color: #4b5563; line-height: 1.6; }
+    .doc-meta { margin-top: 24px; display: flex; justify-content: space-between; }
+    .doc-meta .box h2 { margin: 0 0 8px; font-size: 18px; color: #1f2d5a; }
+    .doc-meta .box p { margin: 2px 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+    th { background: #1f2d5a; color: #fff; padding: 10px; text-align: right; font-size: 13px; }
+    td { padding: 10px; border-bottom: 1px solid #e5e7eb; }
+    tr:nth-child(even) td { background: #f9fafb; }
+    .num { text-align: left; direction: ltr; }
+    .totals { margin-top: 20px; margin-left: auto; width: 300px; }
+    .totals table { margin-top: 0; }
+    .totals td { padding: 6px 10px; }
+    .totals .grand { font-size: 16px; font-weight: bold; color: #1f2d5a; border-top: 2px solid #1f2d5a; }
+    .footer { margin-top: 48px; border-top: 1px solid #e5e7eb; padding-top: 12px; font-size: 11px; color: #9ca3af; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">
+      <h1>איי.איי אלקטרוניקה בע"מ</h1>
+      <div class="tagline">מוצרי אלקטרוניקה מקוריים | אחריות יבואן רשמי</div>
+    </div>
+    <div class="company">
+      <div><strong>ח.פ:</strong> 515-678-923 (עוסק מורשה)</div>
+      <div>רחוב הברזל 30, רמת החייל, תל אביב</div>
+      <div>טלפון: 03-555-1234 | www.ai-electronics.co.il</div>
+    </div>
+  </div>
+
+  <div class="doc-meta">
+    <div class="box">
+      <h2>{{docTitle}} מס' {{docNumber}}</h2>
+      <p><strong>תאריך:</strong> {{date}}</p>
+      <p><strong>תנאי תשלום:</strong> {{paymentTerms}}</p>
+    </div>
+    <div class="box" style="text-align: left;">
+      <h2>לכבוד:</h2>
+      <p><strong>לקוח:</strong> {{customerName}}</p>
+      <p><strong>מזהה לקוח:</strong> {{customerId}}</p>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>תיאור הפריט / שירות</th>
+        <th style="width: 80px; text-align: center;">כמות</th>
+        <th style="width: 120px;" class="num">מחיר יח' (₪)</th>
+        <th style="width: 120px;" class="num">סה"כ נטו (₪)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{itemsRows}}
+    </tbody>
+  </table>
+
+  <div class="totals">
+    <table>
+      <tr>
+        <td>סה"כ לפני מע"מ:</td>
+        <td class="num">₪{{amount}}</td>
+      </tr>
+      <tr>
+        <td>מע"מ (18%):</td>
+        <td class="num">₪{{vatAmount}}</td>
+      </tr>
+      <tr class="grand">
+        <td>סה"כ לתשלום:</td>
+        <td class="num">₪{{total}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    הופק אוטומטית באמצעות מערכת n8n ERP | מסמך זה הינו מסמך ממוחשב בהתאם להוראות ניהול ספרים
+  </div>
+</body>
+</html>
